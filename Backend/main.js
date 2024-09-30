@@ -1,10 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
+const cors = require('cors');
 dotenv.config();
 
 const app = express();
 app.use(express.json());  // For parsing application/json
+app.use(cors());
 
 const expenseData = require("./models/expenses");
 
@@ -16,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 // POST route - Add new expense
-app.post("/expenses", async (req, res) => {
+app.post("/", async (req, res) => {
     const { expenseName, expenseDate, expenseAmt } = req.body;
     try {
         const expenseAdded = await expenseData.create({
@@ -32,7 +34,7 @@ app.post("/expenses", async (req, res) => {
 });
 
 // GET route - Get all expenses
-app.get("/expenses", async (req, res) => {
+app.get("/", async (req, res) => {
     try {
         const allExpenses = await expenseData.find();
         res.status(200).json(allExpenses);
@@ -42,7 +44,7 @@ app.get("/expenses", async (req, res) => {
 });
 
 // DELETE route - Delete an expense by ID
-app.delete("/expenses/:id", async (req, res) => {
+app.delete("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const deletedExpense = await expenseData.findByIdAndDelete(id);
@@ -56,7 +58,7 @@ app.delete("/expenses/:id", async (req, res) => {
 });
 
 // UPDATE route - Edit an expense by ID
-app.patch("/expenses/:id", async (req, res) => {
+app.patch("/:id", async (req, res) => {
     const { id } = req.params;
     try {
         const updatedExpense = await expenseData.findByIdAndUpdate(id, req.body, {

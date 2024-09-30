@@ -11,8 +11,6 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const addExpense = { expenseName, expenseDate, expenseAmt };
-    console.log(addExpense);
-
     // Send data to the server
     const response = await fetch('http://localhost:4000/', {
       method: 'POST',
@@ -21,6 +19,10 @@ function App() {
       },
       body: JSON.stringify(addExpense),
     });
+
+    setExpenseName("");
+    setExpenseDate("");
+    setExpenseAmt("");
 
     if (response.ok) {
       const result = await response.json();
