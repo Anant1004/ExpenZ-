@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import './App.css';
+import ExpenseList from './components/expenseList';
 
 function App() {
-  // State hooks should be declared inside the functional component
+  // State hooks for managing input fields and expense data
   const [expenseName, setExpenseName] = useState("");
   const [expenseDate, setExpenseDate] = useState("");
   const [expenseAmt, setExpenseAmt] = useState("");
+  const [expenseData, setExpenseData] = useState([]); // State for updating expense data
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const addExpense = { expenseName, expenseDate, expenseAmt };
+    
     // Send data to the server
     const response = await fetch('http://localhost:4000/', {
       method: 'POST',
@@ -20,6 +23,7 @@ function App() {
       body: JSON.stringify(addExpense),
     });
 
+    // Reset input fields after submission
     setExpenseName("");
     setExpenseDate("");
     setExpenseAmt("");
@@ -27,6 +31,9 @@ function App() {
     if (response.ok) {
       const result = await response.json();
       console.log('Expense added:', result);
+
+      // Update the expenseData state with the new expense
+      setExpenseData((prevData) => [...prevData, result]);
     } else {
       console.error('Failed to add expense');
     }
@@ -34,7 +41,7 @@ function App() {
 
   return (
     <div className="w-full bg-red-500 h-screen font-[Raleway]">
-      <form className="form " onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Expense Name</label>
           <input
@@ -67,6 +74,8 @@ function App() {
         </div>
         <button type="submit" className='px-2 py-3 bg-yellow-300'>Add expense</button>
       </form>
+      {/* Pass expenseData to ExpenseList */}
+      <ExpenseList expenseData={expenseData} />
     </div>
   );
 }

@@ -12,11 +12,6 @@ const expenseData = require("./models/expenses");
 
 // Routes
 
-// Root route
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
 // POST route - Add new expense
 app.post("/", async (req, res) => {
     const { expenseName, expenseDate, expenseAmt } = req.body;
