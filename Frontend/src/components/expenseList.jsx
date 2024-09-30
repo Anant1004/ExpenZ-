@@ -2,8 +2,8 @@ import React from 'react';
 
 const ExpenseList = ({ expenseData }) => {
     return (
-        <div className='h-1/2 w-1/2 bg-gray-600 p-4'>
-            <h2 className="text-white text-lg mb-4">Expense List</h2>
+        <div className='h-1/2 md:w-[30vw] w-full bg-gray-600 p-4 rounded-2xl'>
+            <h2 className="text-white text-lg mb-4">All Expenses</h2>
             {expenseData.length > 0 ? (
                 <ul className="text-white">
                     {expenseData.map((expense, index) => (
